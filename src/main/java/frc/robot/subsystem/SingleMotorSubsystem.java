@@ -5,6 +5,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.SparkMaxRelativeEncoder.Type;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -15,9 +16,9 @@ public class SingleMotorSubsystem extends SubsystemBase {
     private RelativeEncoder encoder;
 
     public SingleMotorSubsystem() {
-        this.motor = new CANSparkMax(14, MotorType.kBrushless);
+        this.motor = new CANSparkMax(12, MotorType.kBrushless);
         this.pidController = motor.getPIDController();
-        this.encoder = motor.getEncoder();
+        this.encoder = motor.getEncoder(Type.kQuadrature, 4096);
 
         setup();
     }
@@ -31,11 +32,14 @@ public class SingleMotorSubsystem extends SubsystemBase {
         pidController.setPositionPIDWrappingMinInput(0);
         pidController.setPositionPIDWrappingMaxInput(2 * Math.PI);
 
-        //encoder.setPosition(0);
+        encoder.setPosition(0);
         encoder.setPositionConversionFactor(Math.PI * 2.0 / 4096.0);
+        pidController.setFeedbackDevice(encoder);
+
     }
 
     public void rotateTo(double radians) {
+        System.out.println("rotating to: " + radians);
         pidController.setReference(radians, ControlType.kPosition);
     };
 

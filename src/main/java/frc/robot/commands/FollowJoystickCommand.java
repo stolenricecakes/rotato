@@ -18,14 +18,19 @@ public class FollowJoystickCommand extends CommandBase{
 
     @Override
     public void execute() {
+        double angle = determineAngle(controller.getLeftX(), controller.getLeftY());
+        singleMotorSubsystem.rotateTo(angle);
+    }
+
+    public double determineAngle(double leftX, double leftY) {
         // cos(angle) = x value.   so - solve for angle.
-        double angle = Math.toRadians(Math.acos(controller.getLeftX()));
+        double angle = Math.acos(leftX);
 
         // remember - invert access.   if y < 1 that means y = forward, top of circle. 
-        if (controller.getLeftY() > 0 ) {
+        if (leftY > 0 ) {
             angle = (Math.PI - angle) + Math.PI; // we're in the bottom half of the unit circle.
         }
-        singleMotorSubsystem.rotateTo(angle);
+        return angle;
     }
 
     @Override

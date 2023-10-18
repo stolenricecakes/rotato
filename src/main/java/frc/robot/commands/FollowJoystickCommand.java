@@ -8,6 +8,7 @@ public class FollowJoystickCommand extends CommandBase{
 
     private SingleMotorSubsystem singleMotorSubsystem;
     private CommandXboxController controller;
+    private double deadzone = .2;
 
     public FollowJoystickCommand(SingleMotorSubsystem singleMotorSubsystem, CommandXboxController controller) {
         this.singleMotorSubsystem = singleMotorSubsystem;
@@ -18,8 +19,10 @@ public class FollowJoystickCommand extends CommandBase{
 
     @Override
     public void execute() {
-        double angle = determineAngle(controller.getLeftX(), controller.getLeftY());
-        singleMotorSubsystem.rotateTo(angle);
+        if (Math.abs(controller.getRightX()) > deadzone || Math.abs(controller.getRightY()) > deadzone) {
+            double angle = determineAngle(controller.getRightX(), controller.getRightY());
+            singleMotorSubsystem.rotateTo(angle);
+        }
     }
 
     public double determineAngle(double leftX, double leftY) {

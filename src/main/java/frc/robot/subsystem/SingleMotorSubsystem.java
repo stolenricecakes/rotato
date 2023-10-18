@@ -1,11 +1,11 @@
 package frc.robot.subsystem;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxAnalogSensor;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.SparkMaxRelativeEncoder.Type;
+import com.revrobotics.SparkMaxAnalogSensor.Mode;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -13,12 +13,12 @@ public class SingleMotorSubsystem extends SubsystemBase {
 
     private CANSparkMax motor;
     private SparkMaxPIDController pidController;
-    private RelativeEncoder encoder;
+    private SparkMaxAnalogSensor encoder;
 
     public SingleMotorSubsystem() {
         this.motor = new CANSparkMax(12, MotorType.kBrushless);
         this.pidController = motor.getPIDController();
-        this.encoder = motor.getEncoder(Type.kQuadrature, 4096);
+        this.encoder = motor.getAnalog(Mode.kAbsolute);
 
         setup();
     }
@@ -32,8 +32,8 @@ public class SingleMotorSubsystem extends SubsystemBase {
         pidController.setPositionPIDWrappingMinInput(0);
         pidController.setPositionPIDWrappingMaxInput(2 * Math.PI);
 
-        encoder.setPosition(0);
-        encoder.setPositionConversionFactor(Math.PI * 2.0 / 4096.0);
+        //encoder.setPosition(0);
+        encoder.setPositionConversionFactor(Math.PI * 2.0 / 3.3);
         pidController.setFeedbackDevice(encoder);
 
     }

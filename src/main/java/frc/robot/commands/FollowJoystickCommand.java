@@ -1,10 +1,10 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystem.SingleMotorSubsystem;
 
-public class FollowJoystickCommand extends CommandBase{
+public class FollowJoystickCommand extends Command{
 
     private SingleMotorSubsystem singleMotorSubsystem;
     private CommandXboxController controller;
@@ -28,6 +28,7 @@ public class FollowJoystickCommand extends CommandBase{
     public double determineAngle(double leftX, double leftY) {
         // cos(angle) = x value.   so - solve for angle.
         double angle = Math.acos(leftX);
+        System.out.println("leftX: " + leftX + ", leftY: " + leftY);
 
         // remember - invert access.   if y < 1 that means y = forward, top of circle. 
         if (leftY > 0 ) {
